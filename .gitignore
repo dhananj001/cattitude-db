@@ -51,3 +51,5 @@ Homestead.json
 auth.json
 
 .vite/
+storage/
+bootstrap/cache/
