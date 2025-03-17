@@ -12,10 +12,13 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden sm:flex space-x-6 ml-10">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-[#f0eae3] hover:text-white">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
+                        style="color: #f0eae3 !important;">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('records.index')" :active="request()->routeIs('records.index')" class="text-[#f0eae3] hover:text-white">
+
+                    <x-nav-link :href="route('records.index')" :active="request()->routeIs('records.index')"
+                        style="color: #f0eae3 !important;">
                         {{ __('Records') }}
                     </x-nav-link>
                 </div>

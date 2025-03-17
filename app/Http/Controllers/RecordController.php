@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Record;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\ValidationException;
+
+
 
 class RecordController extends Controller
 {
@@ -125,9 +129,17 @@ class RecordController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Record $record)
+    public function destroy($id)
     {
+        if (!Gate::allows('delete-record')) {
+            throw ValidationException::withMessages([
+                'error' => "🚫 Oops! You don't have permission to delete this record."
+            ]);
+        }
+
+        $record = Record::findOrFail($id);
         $record->delete();
-        return redirect()->route('records.index')->with('success', 'Record deleted successfully!');
+
+        return redirect()->route('records.index')->with('success', 'Record deleted successfully.');
     }
 }
