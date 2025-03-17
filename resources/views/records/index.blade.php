@@ -1,105 +1,99 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Records List') }}
+        <h2 class="text-lg font-semibold text-[#9f234a] bg-[#fef2f5] px-6 py-3 rounded-t-md shadow-md">
+            Records List
         </h2>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 shadow-md sm:rounded-lg p-6">
+    <div class="mx-auto mt-6 w-[90%] max-w-[1400px]">
+        <div class="bg-[#fff8f0] shadow-lg rounded-lg p-6 border border-[#e7a739]">
 
-                <!-- Search Bar -->
-                <div class="mb-4 flex justify-between">
-                    <form method="GET" action="{{ route('records.index') }}" class="w-full max-w-lg flex relative">
-                        <!-- Search Input -->
-                        <div class="relative w-full">
-                            <input type="text" id="searchInput" name="search" placeholder="Search records..."
-                                value="{{ request('search') }}"
-                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-gray-900 dark:text-gray-100 rounded-md p-2 w-full pr-10">
+            <!-- Search & Add Button -->
+            <div class="mb-4 flex justify-between">
+                <form method="GET" action="{{ route('records.index') }}" class="w-full max-w-lg flex relative">
+                    <div class="relative w-full">
+                        <input type="text" id="searchInput" name="search" placeholder="Search records..."
+                            value="{{ request('search') }}"
+                            class="w-full border border-[#e7a739] bg-white text-gray-800 rounded-md px-3 py-2 focus:ring-[#e7a739] focus:border-[#e7a739] shadow-sm">
+                        @if (request('search'))
+                            <button type="button" id="clearSearch"
+                                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-red-500 text-xl">
+                                ✖
+                            </button>
+                        @endif
+                    </div>
+                    <button type="submit"
+    class="ml-2 px-6 py-2 font-medium text-[#9f234a] border border-[#9f234a] bg-[#fef2f5]
+    rounded-full shadow-sm hover:bg-[#f8d9e0] transition-all duration-200 ease-in-out">
+    Search
+</button>
 
-                            <!-- Clear Button (✖ inside input) -->
-                            @if (request('search'))
-                                <button type="button" id="clearSearch"
-                                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 dark:text-gray-400 hover:text-red-500 text-xl">
-                                    <b>x</b>
-                                </button>
-                            @endif
-                        </div>
+                </form>
 
-                        <!-- Search Button -->
-                        <button type="submit" class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Search</button>
-                    </form>
+                <a href="{{ route('records.create') }}"
+                    class="bg-[#e7a739] text-white px-4 py-2 rounded-md hover:bg-[#d2922d] transition shadow">+ Add Record</a>
+            </div>
 
-                    <!-- Add Record Button -->
-                    <a href="{{ route('records.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md">+ Add
-                        Record</a>
-                </div>
+            <!-- Records Table -->
+            <div class="overflow-x-auto">
+                <table class="w-full border border-[#e7a739] text-sm rounded-md shadow-md">
+                    <thead class="bg-[#f0eae3] text-gray-900">
+                        <tr class="text-left">
+                            <th class="p-3">First Name</th>
+                            <th class="p-3">Last Name</th>
+                            <th class="p-3">Address</th>
+                            <th class="p-3">Phone</th>
+                            <th class="p-3">Email</th>
+                            <th class="p-3">Reason</th>
+                            <th class="p-3">Charged</th>
+                            <th class="p-3">Added By</th>
+                            <th class="p-3">Date</th>
+                            <th class="p-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        @foreach ($records as $record)
+                            <tr class="border-b border-[#e7a739] text-gray-900 hover:bg-[#fef2f5] transition">
+                                <td class="p-3">{{ $record->first_name }}</td>
+                                <td class="p-3">{{ $record->last_name }}</td>
+                                <td class="p-3">{{ $record->address1 }}, {{ $record->address2 }}</td>
+                                <td class="p-3">{{ $record->phone }}</td>
+                                <td class="p-3">{{ $record->email }}</td>
+                                <td class="p-3">{{ $record->reason }}</td>
+                                <td class="p-3">
+                                    <span class="px-3 py-1 text-xs font-semibold rounded-full shadow-sm
+                                        {{ $record->charged ? 'bg-green-100 text-green-700 border border-green-400' : 'bg-red-100 text-red-700 border border-red-400' }}">
+                                        {{ $record->charged ? 'Yes' : 'No' }}
+                                    </span>
+                                </td>
 
+                                <td class="p-3">{{ $record->user->name ?? 'N/A' }}</td>
+                                <td class="p-3">{{ $record->created_at->format('Y-m-d') }}</td>
+                                <td class="p-3 flex space-x-3">
+                                    <!-- Edit Button -->
+                                    <a href="{{ route('records.edit', $record->id) }}" class="text-[#9f234a] hover:text-[#871d3e]">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
 
+                                    <!-- Delete Button -->
+                                    <form method="POST" action="{{ route('records.destroy', $record->id) }}">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" onclick="return confirm('Are you sure?')" class="text-red-500 hover:text-red-600">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
 
-
-                <!-- Records Table -->
-                <div class="overflow-x-auto">
-                    <table class="min-w-full border border-gray-200 dark:border-gray-700 text-sm">
-                        <thead class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
-                            <tr>
-                                <th class="p-3">First Name</th>
-                                <th class="p-3">Last Name</th>
-                                <th class="p-3">Address</th>
-                                <th class="p-3">Phone</th>
-                                <th class="p-3">Email</th>
-                                <th class="p-3">Reason</th>
-                                <th class="p-3">Charged</th>
-                                <th class="p-3">Added By</th>
-                                <th class="p-3">Date</th>
-                                <th class="p-3">Actions</th>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($records as $record)
-                                <tr
-                                    class="border-b border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100">
-                                    <td class="p-3">{{ $record->first_name }}</td>
-                                    <td class="p-3">{{ $record->last_name }}</td>
-                                    <td class="p-3">{{ $record->address1 }}, {{ $record->address2 }}</td>
-                                    <td class="p-3">{{ $record->phone }}</td>
-                                    <td class="p-3">{{ $record->email }}</td>
-                                    <td class="p-3">{{ $record->reason }}</td>
-                                    <td class="p-3">
-                                        <span
-                                            class="px-2 py-1 text-xs font-bold rounded
-                                            {{ $record->charged ? 'bg-green-500 text-white' : 'bg-red-500 text-white' }}">
-                                            {{ $record->charged ? 'Yes' : 'No' }}
-                                        </span>
-                                    </td>
-                                    <td class="p-3">
-                                        {{ $record->user->name ?? 'N/A' }}
-                                    </td>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
 
-                                    <td class="p-3">{{ $record->created_at->format('Y-m-d') }}</td>
-                                    <td class="p-3 flex space-x-2">
-                                        <a href="{{ route('records.edit', $record->id) }}"
-                                            class="text-blue-500">Edit</a>
-                                        {{-- @if (auth()->user()->isAdmin()) --}}
-                                        <form method="POST" action="{{ route('records.destroy', $record->id) }}">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-500"
-                                                onclick="return confirm('Are you sure?')">Delete</button>
-                                        </form>
-                                        {{-- @endif --}}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination -->
-                <div class="mt-4">
-                    {{ $records->links() }}
-                </div>
+            <!-- Pagination -->
+            <div class="mt-4">
+                {{ $records->links() }}
             </div>
         </div>
     </div>
@@ -107,7 +101,7 @@
 
 <script>
     document.getElementById('clearSearch')?.addEventListener('click', function() {
-        document.getElementById('searchInput').value = ''; // Clear the input
-        window.location.href = "{{ route('records.index') }}"; // Reload the page without search
+        document.getElementById('searchInput').value = '';
+        window.location.href = "{{ route('records.index') }}";
     });
 </script>
