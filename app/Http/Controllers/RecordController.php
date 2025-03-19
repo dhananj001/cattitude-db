@@ -131,7 +131,8 @@ class RecordController extends Controller
      */
     public function destroy($id)
     {
-        if (!Gate::allows('delete-record')) {
+        // Allow only admins to delete
+        if (!auth()->user()->hasRole('admin')) {
             throw ValidationException::withMessages([
                 'error' => "🚫 Oops! You don't have permission to delete this record."
             ]);

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-lg font-semibold text-[#9f234a] bg-[#fef2f5] px-6 py-3 rounded-t-md shadow-md">
-            Records List
+            Records
         </h2>
     </x-slot>
 
@@ -152,16 +152,19 @@
                                     </a>
 
                                     <!-- Delete Button -->
-                                    {{-- @can('delete-record') --}}
-                                    <form method="POST" action="{{ route('records.destroy', $record->id) }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" onclick="return confirm('Are you sure?')"
-                                            class="text-red-500 hover:text-red-600">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                    {{-- @endcan --}}
+                                    @auth
+                                        @if (auth()->user()->hasRole('admin'))
+                                            <form method="POST" action="{{ route('records.destroy', $record->id) }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" onclick="return confirm('Are you sure?')"
+                                                    class="text-red-500 hover:text-red-600">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endauth
+
                                 </td>
 
                             </tr>
