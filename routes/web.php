@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecordController;
+use App\Http\Controllers\StaffController;
 
 
 // Route::get('/', function () {
@@ -23,6 +24,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('records', RecordController::class);
+    Route::resource('staff', StaffController::class);
+
+    // Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
+
 });
 
 require __DIR__.'/auth.php';

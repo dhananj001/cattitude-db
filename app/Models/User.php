@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -44,4 +45,34 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // A user can have multiple roles
+    public function userRoles()
+    {
+        return $this->hasMany(UserRole::class);
+    }
+
+    // A user can have multiple roles via user_roles table
+    public function roles()
+    {
+        return $this->hasManyThrough(Role::class, UserRole::class, 'user_id', 'id', 'id', 'role_id');
+    }
+
+    // Method to check if a user has a specific role
+    public function hasRole($roleName)
+    {
+        return $this->roles()->where('name', $roleName)->exists();
+    }
+
+    // protected static function boot()
+    // {
+    //     parent::boot();
+
+    //     static::created(function ($user) {
+    //         $staffRole = Role::where('name', 'staff')->first();
+    //         if ($staffRole) {
+    //             $user->roles()->attach($staffRole);
+    //         }
+    //     });
+    // }
 }
