@@ -71,38 +71,43 @@
                                 </td>
 
                                 <td class="p-3">
-                                    <div class="bg-white shadow-md rounded-lg p-3 flex flex-col space-y-2">
+                                    <div class="bg-[#fef2f5] shadow-md rounded-md p-4 flex flex-col gap-4 border border-[#e7a739]">
                                         <!-- Assign Role Form -->
-                                        <form action="{{ route('users.assignRole', $user->id) }}" method="POST" class="flex items-center space-x-2">
+                                        <form action="{{ route('users.assignRole', $user->id) }}" method="POST" class="flex items-center gap-3">
                                             @csrf
-                                            <select name="role_id" class="border rounded-lg px-3 py-2 w-40 bg-gray-100 text-gray-700 focus:ring focus:ring-green-300">
+                                            <select name="role_id"
+                                                class="border border-[#e7a739] rounded-md px-3 py-2 w-48 bg-white text-gray-800 focus:ring-2 focus:ring-[#e7a739] focus:border-[#e7a739] transition">
                                                 @foreach ($roles as $role)
                                                     <option value="{{ $role->id }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
                                                         {{ ucfirst($role->name) }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white px-3 py-2 rounded-lg shadow">
+                                            <button type="submit"
+                                                class="bg-[#e7a739] text-white px-4 py-2 rounded-md shadow hover:bg-[#d2922d] transition">
                                                 Assign
                                             </button>
                                         </form>
 
                                         <!-- Remove Role Form -->
-                                        <form action="{{ route('users.removeRole', $user->id) }}" method="POST" class="flex items-center space-x-2">
+                                        <form action="{{ route('users.removeRole', $user->id) }}" method="POST" class="flex items-center gap-3">
                                             @csrf
-                                            <select name="role_id" class="border rounded-lg px-3 py-2 w-40 bg-gray-100 text-gray-700 focus:ring focus:ring-red-300">
+                                            <select name="role_id"
+                                                class="border border-[#e7a739] rounded-md px-3 py-2 w-48 bg-white text-gray-800 focus:ring-2 focus:ring-red-400 focus:border-red-500 transition">
                                                 @foreach ($user->roles as $role)
                                                     <option value="{{ $role->id }}">
                                                         {{ ucfirst($role->name) }}
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-3 py-2 rounded-lg shadow">
+                                            <button type="submit"
+                                                class="bg-red-500 text-white px-4 py-2 rounded-md shadow hover:bg-red-600 transition">
                                                 Remove
                                             </button>
                                         </form>
                                     </div>
                                 </td>
+
 
 
 
