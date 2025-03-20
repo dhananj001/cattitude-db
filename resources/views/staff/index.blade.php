@@ -54,6 +54,7 @@
                             <th class="p-3">Name</th>
                             <th class="p-3">Email</th>
                             <th class="p-3">Role</th>
+                            <th class="p-3">Admin</th>
                             <th class="p-3">Actions</th>
                         </tr>
                     </thead>
@@ -62,12 +63,49 @@
                             <tr class="border-b border-[#e7a739] text-gray-900 hover:bg-[#fef2f5] transition">
                                 <td class="p-3">{{ $user->name }}</td>
                                 <td class="p-3">{{ $user->email }}</td>
-                                <td class="p-3">
-                                    {{ $user->roles->first()->name ?? 'N/A' }}
-                                </td>
                                 {{-- <td class="p-3">
-                                    {{ $user->roles->pluck('name')->map(fn($role) => ucfirst($role))->implode(', ') }}
+                                    {{ $user->roles->first()->name ?? 'N/A' }}
                                 </td> --}}
+                                <td class="p-3">
+                                    {{ $user->roles->pluck('name')->map(fn($role) => ucfirst($role))->implode(', ') }}
+                                </td>
+
+                                <td class="p-3">
+                                    <div class="bg-white shadow-md rounded-lg p-3 flex flex-col space-y-2">
+                                        <!-- Assign Role Form -->
+                                        <form action="{{ route('users.assignRole', $user->id) }}" method="POST" class="flex items-center space-x-2">
+                                            @csrf
+                                            <select name="role_id" class="border rounded-lg px-3 py-2 w-40 bg-gray-100 text-gray-700 focus:ring focus:ring-green-300">
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role->id }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
+                                                        {{ ucfirst($role->name) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <button type="submit" class="bg-green-500 hover:bg-green-700 text-white px-3 py-2 rounded-lg shadow">
+                                                Assign
+                                            </button>
+                                        </form>
+
+                                        <!-- Remove Role Form -->
+                                        <form action="{{ route('users.removeRole', $user->id) }}" method="POST" class="flex items-center space-x-2">
+                                            @csrf
+                                            <select name="role_id" class="border rounded-lg px-3 py-2 w-40 bg-gray-100 text-gray-700 focus:ring focus:ring-red-300">
+                                                @foreach ($user->roles as $role)
+                                                    <option value="{{ $role->id }}">
+                                                        {{ ucfirst($role->name) }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white px-3 py-2 rounded-lg shadow">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+
+
+
 
                                 <td class="p-3 flex space-x-3">
                                     <a href="{{ route('staff.edit', $user->id) }}"

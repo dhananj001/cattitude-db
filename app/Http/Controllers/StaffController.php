@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User; // Using User model for staff management
+use App\Models\Role; // Using Role model for staff management
+use Illuminate\Support\Facades\Auth;
+
 
 class StaffController extends Controller
 {
@@ -11,13 +14,19 @@ class StaffController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $staff = User::when($search, function ($query) use ($search) {
+
+        // Fetch users with their assigned roles
+        $staff = User::with('roles')->when($search, function ($query) use ($search) {
             $query->where('name', 'like', "%{$search}%")
                 ->orWhere('email', 'like', "%{$search}%");
         })->paginate(10);
 
-        return view('staff.index', compact('staff'));
+        // Fetch all roles to display in the dropdown
+        $roles = Role::all();
+
+        return view('staff.index', compact('staff', 'roles'));
     }
+
 
     // Show the form for adding a new staff member
     public function create()
@@ -76,5 +85,39 @@ class StaffController extends Controller
     {
         User::findOrFail($id)->delete();
         return redirect()->route('staff.index')->with('success', 'Staff deleted successfully!');
+    }
+
+    // Update a staff member's role
+    // public function updateRole(Request $request, User $user)
+    // {
+    //     if (Auth::user()->hasRole('admin')) {
+    //         if ($request->has('is_admin')) {
+    //             $user->roles()->sync([1]);
+    //         } else {
+    //             $user->roles()->detach(1);
+    //         }
+    //     }
+
+    //     return back()->with('success', 'Role updated successfully.');
+    // }
+
+    public function assignRole(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $role = Role::findOrFail($request->role_id);
+
+        $user->assignRole($role->id);
+
+        return redirect()->back()->with('success', 'Role assigned successfully.');
+    }
+
+    public function removeRole(Request $request, $userId)
+    {
+        $user = User::findOrFail($userId);
+        $role = Role::findOrFail($request->role_id);
+
+        $user->removeRole($role->id);
+
+        return redirect()->back()->with('success', 'Role removed successfully.');
     }
 }

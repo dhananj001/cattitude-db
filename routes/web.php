@@ -28,6 +28,10 @@ Route::middleware('auth')->group(function () {
 
     // Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
 
+    // Route::put('/staff/{user}/update-role', [StaffController::class, 'updateRole'])->name('staff.updateRole');
+
+    Route::post('/users/{id}/assign-role', [StaffController::class, 'assignRole'])->name('users.assignRole');
+    Route::post('/users/{id}/remove-role', [StaffController::class, 'removeRole'])->name('users.removeRole');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

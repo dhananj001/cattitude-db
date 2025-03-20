@@ -49,7 +49,7 @@ class User extends Authenticatable
     // A user can have multiple roles
     public function userRoles()
     {
-        return $this->hasMany(UserRole::class);
+        return $this->hasMany(UserRole::class, 'user_id');
     }
 
     // A user can have multiple roles via user_roles table
@@ -64,15 +64,21 @@ class User extends Authenticatable
         return $this->roles()->where('name', $roleName)->exists();
     }
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
+    // Assign a role to a user
+    public function assignRole($roleId)
+    {
+        // Prevent duplicate role assignment
+        if (!$this->userRoles()->where('role_id', $roleId)->exists()) {
+            $this->userRoles()->create(['role_id' => $roleId]);
+        }
+    }
 
-    //     static::created(function ($user) {
-    //         $staffRole = Role::where('name', 'staff')->first();
-    //         if ($staffRole) {
-    //             $user->roles()->attach($staffRole);
-    //         }
-    //     });
-    // }
+    // Remove a role from a user
+    public function removeRole($roleId)
+    {
+        // Delete the UserRole entry to remove the role
+        $this->userRoles()->where('role_id', $roleId)->delete();
+    }
+
+
 }
