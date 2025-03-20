@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecordController;
 use App\Http\Controllers\StaffController;
+use App\Http\Middleware\AdminMiddleware;
+
 
 
 // Route::get('/', function () {
@@ -26,12 +28,17 @@ Route::middleware('auth')->group(function () {
     Route::resource('records', RecordController::class);
     Route::resource('staff', StaffController::class);
 
-    // Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
+    Route::post('/users/{user}/assignRole', [StaffController::class, 'assignRole']);
+    Route::post('/users/{user}/removeRole', [StaffController::class, 'removeRole']);
 
-    // Route::put('/staff/{user}/update-role', [StaffController::class, 'updateRole'])->name('staff.updateRole');
+    Route::get('/users/{user}/getRoles', [StaffController::class, 'getRoles']);
 
-    Route::post('/users/{id}/assign-role', [StaffController::class, 'assignRole'])->name('users.assignRole');
-    Route::post('/users/{id}/remove-role', [StaffController::class, 'removeRole'])->name('users.removeRole');
+    Route::middleware([AdminMiddleware::class])->group(function () {
+        Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
+        Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
+        Route::get('/staff/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
+    });
+
 });
 
 require __DIR__ . '/auth.php';

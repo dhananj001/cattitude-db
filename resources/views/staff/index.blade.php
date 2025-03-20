@@ -1,3 +1,5 @@
+@if(Auth::user()->hasRole('admin'))
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="text-lg font-semibold text-[#9f234a] bg-[#fef2f5] px-6 py-3 rounded-t-md shadow-md">
@@ -34,7 +36,7 @@
                     + Add Staff
                 </a>
             </div>
-            @if (session('success'))
+            {{-- @if (session('success'))
                 <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
                     {{ session('success') }}
                 </div>
@@ -44,6 +46,54 @@
                 <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
                     {{ session('error') }}
                 </div>
+            @endif --}}
+
+            @if (session('success') || session('error') || $errors->has('error'))
+                @php
+                    $isSuccess = session('success');
+                    $bgColor = $isSuccess ? 'bg-green-100' : 'bg-red-100';
+                    $progressColor = $isSuccess ? 'bg-green-200' : 'bg-red-200';
+                @endphp
+
+                <div id="alertBox"
+                    class="relative px-6 py-3 my-3  shadow-lg transition-all duration-500 text-gray-800 overflow-hidden {{ $bgColor }}">
+
+                    <!-- Progress Background -->
+                    <div class="absolute inset-0 {{ $progressColor }} animate-progress"></div>
+
+                    <div class="relative flex flex-col items-center text-center">
+                        <div class="flex items-center gap-3">
+                            <!-- Success Icon -->
+                            @if ($isSuccess)
+                                <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            @endif
+
+                            <!-- Error Icon -->
+                            @if (!$isSuccess)
+                                {{-- <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12"></path>
+                                </svg> --}}
+                            @endif
+
+                            <span class="text-sm relative">
+                                {{ session('success') ?? (session('error') ?? $errors->first('error')) }}
+                            </span>
+                        </div>
+
+                        <!-- Close Button -->
+                        {{-- <button onclick="dismissAlert()" class="text-gray-800 hover:text-gray-600 relative">
+                            &times;
+                        </button> --}}
+                    </div>
+                </div>
+
+
             @endif
 
             <!-- Staff Table -->
@@ -53,9 +103,16 @@
                         <tr class="text-left">
                             <th class="p-3">Name</th>
                             <th class="p-3">Email</th>
-                            <th class="p-3">Role</th>
-                            <th class="p-3">Admin</th>
+                            @if(Auth::user()->hasRole('admin'))
+                                <th class="p-3">Role</th>
+
+                            @endif
+                            @if(Auth::user()->hasRole('admin'))
+                            <th class="p-3">Assign Roles</th>
                             <th class="p-3">Actions</th>
+                            @endif
+
+
                         </tr>
                     </thead>
                     <tbody class="bg-white">
@@ -66,71 +123,53 @@
                                 {{-- <td class="p-3">
                                     {{ $user->roles->first()->name ?? 'N/A' }}
                                 </td> --}}
-                                <td class="p-3">
+
+                                @if(Auth::user()->hasRole('admin'))
+                                <td class="p-3" id="roles-column-{{ $user->id }}">
                                     {{ $user->roles->pluck('name')->map(fn($role) => ucfirst($role))->implode(', ') }}
                                 </td>
 
                                 <td class="p-3">
-                                    <div class="bg-[#fef2f5] shadow-md rounded-md p-4 flex flex-col gap-4 border border-[#e7a739]">
-                                        <!-- Assign Role Form -->
-                                        <form action="{{ route('users.assignRole', $user->id) }}" method="POST" class="flex items-center gap-3">
-                                            @csrf
-                                            <select name="role_id"
-                                                class="border border-[#e7a739] rounded-md px-3 py-2 w-48 bg-white text-gray-800 focus:ring-2 focus:ring-[#e7a739] focus:border-[#e7a739] transition">
-                                                @foreach ($roles as $role)
-                                                    <option value="{{ $role->id }}" {{ $user->hasRole($role->name) ? 'selected' : '' }}>
-                                                        {{ ucfirst($role->name) }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <button type="submit"
-                                                class="bg-[#e7a739] text-white px-4 py-2 rounded-md shadow hover:bg-[#d2922d] transition">
-                                                Assign
-                                            </button>
-                                        </form>
 
-                                        <!-- Remove Role Form -->
-                                        <form action="{{ route('users.removeRole', $user->id) }}" method="POST" class="flex items-center gap-3">
-                                            @csrf
-                                            <select name="role_id"
-                                                class="border border-[#e7a739] rounded-md px-3 py-2 w-48 bg-white text-gray-800 focus:ring-2 focus:ring-red-400 focus:border-red-500 transition">
-                                                @foreach ($user->roles as $role)
-                                                    <option value="{{ $role->id }}">
-                                                        {{ ucfirst($role->name) }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            <button type="submit"
-                                                class="bg-red-500 text-white px-4 py-2 rounded-md shadow hover:bg-red-600 transition">
-                                                Remove
-                                            </button>
-                                        </form>
+                                    <div class="flex flex-col gap-3">
+                                        @foreach ($roles as $role)
+                                            <label class="flex items-center gap-2 text-gray-800">
+                                                <input type="checkbox" class="toggle-role accent-[#e7a739] w-5 h-5"
+                                                    data-user-id="{{ $user->id }}"
+                                                    data-role-id="{{ $role->id }}"
+                                                    {{ $user->roles->contains('id', $role->id) ? 'checked' : '' }}>
+                                                <span>{{ ucfirst($role->name) }}</span>
+                                            </label>
+                                        @endforeach
                                     </div>
-                                </td>
+
+                            </td>
+                                @endif
 
 
 
+                                @if(Auth::user()->hasRole('admin'))
+                                        <td class="p-3 flex space-x-3">
+                                            <a href="{{ route('staff.edit', $user->id) }}"
+                                                class="text-[#9f234a] hover:text-[#871d3e]">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
 
+                                            @auth
+                                                @if (auth()->user()->hasRole('admin'))
+                                                    <form method="POST" action="{{ route('staff.destroy', $user->id) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" onclick="return confirm('Are you sure?')"
+                                                            class="text-red-500 hover:text-red-600">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            @endauth
+                                        </td>
+                                @endif
 
-                                <td class="p-3 flex space-x-3">
-                                    <a href="{{ route('staff.edit', $user->id) }}"
-                                        class="text-[#9f234a] hover:text-[#871d3e]">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-
-                                    @auth
-                                        @if (auth()->user()->hasRole('admin'))
-                                            <form method="POST" action="{{ route('staff.destroy', $user->id) }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" onclick="return confirm('Are you sure?')"
-                                                    class="text-red-500 hover:text-red-600">
-                                                    <i class="fas fa-trash-alt"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    @endauth
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -151,3 +190,61 @@
         window.location.href = "{{ route('staff.index') }}";
     });
 </script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".toggle-role").forEach(checkbox => {
+            checkbox.addEventListener("change", function() {
+                let userId = this.dataset.userId;
+                let roleId = this.dataset.roleId;
+                let isChecked = this.checked;
+                let url = isChecked ? `/users/${userId}/assignRole` :
+                    `/users/${userId}/removeRole`;
+
+                fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector(
+                                'meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            role_id: roleId
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message); // Debugging message
+                        updateRolesColumn(userId); // Update left column dynamically
+                    })
+                    .catch(error => console.error("Error:", error));
+            });
+        });
+    });
+
+    function updateRolesColumn(userId) {
+        fetch(`/users/${userId}/getRoles`) // Fetch updated roles
+            .then(response => response.json())
+            .then(data => {
+                let rolesText = data.roles.length > 0 ? data.roles.join(", ") : "N/A";
+                document.getElementById(`roles-column-${userId}`).innerText = rolesText;
+            })
+            .catch(error => console.error("Error updating roles column:", error));
+    }
+</script>
+
+<script>
+    function dismissAlert() {
+        let alertBox = document.getElementById('alertBox');
+        alertBox.classList.add('opacity-0', 'translate-y-[-10px]');
+        setTimeout(() => alertBox.remove(), 500);
+    }
+
+    setTimeout(dismissAlert, 4000);
+</script>
+
+
+@else
+    <p class="text-red-500">Unauthorized access.</p>
+@endif

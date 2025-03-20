@@ -21,10 +21,12 @@
                         style="color: #f0eae3 !important;">
                         {{ __('Records') }}
                     </x-nav-link>
+                    @if(Auth::user()->hasRole('admin'))
                     <x-nav-link :href="route('staff.index')" :active="request()->routeIs('staff.index')"
                         style="color: #f0eae3 !important;">
                         {{ __('Staff') }}
                     </x-nav-link>
+                    @endif
                 </div>
             </div>
 
