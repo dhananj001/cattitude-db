@@ -52,3 +52,25 @@
 .opacity-0.translate-y-[-10px] {
     animation: fadeOutUp 0.5s ease-out;
 }
+
+/* Scrollbar container */
+.custom-scrollbar::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  /* Scrollbar track */
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #f0eae3;
+  }
+
+  /* Scrollbar thumb */
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #da668b;
+    border-radius: 10px;
+    border: 1px solid #e7a739;
+  }
+
+  /* Scrollbar thumb on hover */
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #ea4378;
+  }

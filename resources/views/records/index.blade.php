@@ -109,20 +109,24 @@
 
 
             <!-- Records Table -->
-            <div class="overflow-x-auto">
-                <table class="w-full border border-[#e7a739] text-sm rounded-md shadow-md">
+            <div class="w-full overflow-x-auto custom-scrollbar">
+                <table class="min-w-max border border-[#e7a739] text-sm rounded-md shadow-md">
                     <thead class="bg-[#f0eae3] text-gray-900">
                         <tr class="text-left">
-                            <th class="p-3">First Name</th>
-                            <th class="p-3">Last Name</th>
-                            <th class="p-3">Address</th>
-                            <th class="p-3">Phone</th>
-                            <th class="p-3">Email</th>
-                            <th class="p-3">Reason</th>
-                            <th class="p-3">Charged</th>
-                            <th class="p-3">Added By</th>
-                            <th class="p-3">Date</th>
-                            <th class="p-3">Actions</th>
+                            <th class="p-3 min-w-[120px]">First Name</th>
+                            <th class="p-3 min-w-[120px]">Last Name</th>
+                            <th class="p-3 min-w-[180px]">Address</th>
+                            <th class="p-3 min-w-[120px]">City</th>
+                            <th class="p-3 min-w-[120px]">State</th>
+                            <th class="p-3 min-w-[100px]">ZIP</th>
+                            <th class="p-3 min-w-[140px]">Phone</th>
+                            <th class="p-3 min-w-[180px]">Email</th>
+                            <th class="p-3 min-w-[200px]">Reason</th>
+                            <th class="p-3 min-w-[100px]">Charged</th>
+                            <th class="p-3 min-w-[200px]">Comment</th>
+                            <th class="p-3 min-w-[150px]">Added By</th>
+                            <th class="p-3 min-w-[150px]">Date</th>
+                            <th class="p-3 min-w-[120px]">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
@@ -131,6 +135,9 @@
                                 <td class="p-3">{{ $record->first_name }}</td>
                                 <td class="p-3">{{ $record->last_name }}</td>
                                 <td class="p-3">{{ $record->address1 }}, {{ $record->address2 }}</td>
+                                <td class="p-3">{{ $record->city }}</td>
+                                <td class="p-3">{{ $record->state }}</td>
+                                <td class="p-3">{{ $record->zip }}</td>
                                 <td class="p-3">{{ $record->phone }}</td>
                                 <td class="p-3">{{ $record->email }}</td>
                                 <td class="p-3">{{ $record->reason }}</td>
@@ -141,8 +148,9 @@
                                         {{ $record->charged ? 'Yes' : 'No' }}
                                     </span>
                                 </td>
-
+                                <td class="p-3">{{ $record->comment}}</td>
                                 <td class="p-3">{{ $record->user->name ?? 'N/A' }}</td>
+
                                 <td class="p-3">{{ $record->created_at->format('Y-m-d') }}</td>
                                 <td class="p-3 flex space-x-3">
                                     <!-- Edit Button -->
