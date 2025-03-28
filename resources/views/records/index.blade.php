@@ -110,55 +110,65 @@
 
             <!-- Records Table -->
             <div class="w-full overflow-x-auto custom-scrollbar">
-                <table class="min-w-max border border-[#e7a739] text-sm rounded-md shadow-md">
+                <table class="min-w-full border border-[#e7a739] text-sm rounded-md shadow-md">
                     <thead class="bg-[#f0eae3] text-gray-900">
                         <tr class="text-left">
-                            <th class="p-3 min-w-[120px]">First Name</th>
-                            <th class="p-3 min-w-[120px]">Last Name</th>
-                            <th class="p-3 min-w-[180px]">Address</th>
-                            <th class="p-3 min-w-[120px]">City</th>
-                            <th class="p-3 min-w-[120px]">State</th>
-                            <th class="p-3 min-w-[100px]">ZIP</th>
-                            <th class="p-3 min-w-[140px]">Phone</th>
-                            <th class="p-3 min-w-[180px]">Email</th>
-                            <th class="p-3 min-w-[200px]">Reason</th>
-                            <th class="p-3 min-w-[100px]">Charged</th>
-                            <th class="p-3 min-w-[200px]">Comment</th>
-                            <th class="p-3 min-w-[150px]">Added By</th>
-                            <th class="p-3 min-w-[150px]">Date</th>
-                            <th class="p-3 min-w-[120px]">Actions</th>
+                            <th class="p-2 min-w-[80px] max-w-[120px]">First Name</th>
+                            <th class="p-2 min-w-[80px] max-w-[120px]">Last Name</th>
+                            <th class="p-2 min-w-[180px] max-w-[250px]">Address</th>
+                            <th class="p-2 min-w-[80px] max-w-[120px]">City</th>
+                            <th class="p-2 min-w-[50px] max-w-[80px]">State</th>
+                            <th class="p-2 min-w-[70px] max-w-[90px]">ZIP</th>
+                            <th class="p-2 min-w-[100px] max-w-[150px]">Phone</th>
+                            <th class="p-2 min-w-[180px] max-w-[300px]">Email</th>
+                            <th class="p-2 min-w-[200px] max-w-[400px]">Reason</th>
+                            <th class="p-2 min-w-[80px] max-w-[100px]">Charged</th>
+                            <th class="p-2 min-w-[200px] max-w-[400px]">Comment</th>
+                            <th class="p-2 min-w-[150px] max-w-[200px]">Added By</th>
+                            <th class="p-2 min-w-[120px] max-w-[150px]">Date</th>
+                            <th class="p-2 min-w-[100px] max-w-[120px]">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
                         @foreach ($records as $record)
                             <tr class="border-b border-[#e7a739] text-gray-900 hover:bg-[#fef2f5] transition">
-                                <td class="p-3">{{ $record->first_name }}</td>
-                                <td class="p-3">{{ $record->last_name }}</td>
-                                <td class="p-3">{{ $record->address1 }}, {{ $record->address2 }}</td>
-                                <td class="p-3">{{ $record->city }}</td>
-                                <td class="p-3">{{ $record->state }}</td>
-                                <td class="p-3">{{ $record->zip }}</td>
-                                <td class="p-3">{{ $record->phone }}</td>
-                                <td class="p-3">{{ $record->email }}</td>
-                                <td class="p-3">{{ $record->reason }}</td>
-                                <td class="p-3">
+                                <td class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify ">
+                                    {{ $record->first_name }}</td>
+                                <td class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->last_name }}</td>
+                                <td class="p-2 min-w-[180px] max-w-[250px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->address1 }}, {{ $record->address2 }}</td>
+                                <td class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->city }}</td>
+                                <td class="p-2 min-w-[50px] max-w-[80px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->state }}</td>
+                                <td class="p-2 min-w-[70px] max-w-[90px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->zip }}</td>
+                                <td class="p-2 min-w-[100px] max-w-[150px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->phone }}</td>
+                                <td class="p-2 min-w-[180px] max-w-[220px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->email }}</td>
+                                <td class="p-2 min-w-[200px] max-w-[400px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->reason }}</td>
+                                <td class="p-2 min-w-[80px] max-w-[100px] align-top text-center">
                                     <span
-                                        class="px-3 py-1 text-xs font-semibold rounded-full shadow-sm
-                                        {{ $record->charged ? 'bg-green-100 text-green-700 border border-green-400' : 'bg-red-100 text-red-700 border border-red-400' }}">
+                                        class="px-2 py-1 text-xs font-semibold rounded-full shadow-sm
+                            {{ $record->charged ? 'bg-green-100 text-green-700 border border-green-400' : 'bg-red-100 text-red-700 border border-red-400' }}">
                                         {{ $record->charged ? 'Yes' : 'No' }}
                                     </span>
                                 </td>
-                                <td class="p-3">{{ $record->comment}}</td>
-                                <td class="p-3">{{ $record->user->name ?? 'N/A' }}</td>
-
-                                <td class="p-3">{{ $record->created_at->format('Y-m-d') }}</td>
-                                <td class="p-3 flex space-x-3">
+                                <td class="p-2 min-w-[200px] max-w-[400px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->comment }}</td>
+                                <td class="p-2 min-w-[150px] max-w-[200px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->user->name ?? 'N/A' }}</td>
+                                <td class="p-2 min-w-[120px] max-w-[150px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->created_at->format('Y-m-d') }}</td>
+                                <td class="p-2 min-w-[100px] max-w-[120px] flex space-x-3">
                                     <!-- Edit Button -->
                                     <a href="{{ route('records.edit', $record->id) }}"
                                         class="text-[#9f234a] hover:text-[#871d3e]">
                                         <i class="fas fa-edit"></i>
                                     </a>
-
                                     <!-- Delete Button -->
                                     @auth
                                         @if (auth()->user()->hasRole('admin'))
@@ -172,14 +182,13 @@
                                             </form>
                                         @endif
                                     @endauth
-
                                 </td>
-
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+
 
             <!-- Pagination -->
             <div class="mt-4">
