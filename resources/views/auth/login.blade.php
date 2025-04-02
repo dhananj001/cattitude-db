@@ -5,7 +5,7 @@
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
-        <div class="text-gray-700 dark:text-white">
+        <div class="text-gray-700 dark:text-white text-justify">
         Do Not Adopt is a confidential online resource dedicated to safeguarding animal welfare. This database allows animal rescues and shelters to share critical information about adverse adoption experiences, helping to identify individuals who may pose a risk to animal safety. By fostering collaboration and information sharing, Do Not Adopt aims to minimize the likelihood of animals being placed in harmful environments. Access is granted exclusively to verified rescue and shelter organizations. Please complete the
         <a href="https://request.donotadopt.info/" target="_new" class="text-blue-600 dark:text-blue-400 font-semibold underline hover:text-blue-800 dark:hover:text-blue-300 transition duration-200">access request form</a>.
         </div>
