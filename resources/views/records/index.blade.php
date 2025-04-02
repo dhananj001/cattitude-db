@@ -281,21 +281,25 @@
 
         // Smooth futuristic animation
         popup.style.opacity = "0";
-        popup.style.transform = "scale(0.9) rotateX(-10deg)";
+        popup.style.transform = "scale(0.9)";
         setTimeout(() => {
-            popup.style.transition = "opacity 0.3s ease-out, transform 0.3s ease-out";
+            popup.style.transition = "opacity 0.2s ease-out, transform 0.2s ease-out";
             popup.style.opacity = "1";
-            popup.style.transform = "scale(1) rotateX(0)";
+            popup.style.transform = "scale(1)";
         }, 10);
+
+
     }
 
     function closePopup() {
         const popup = document.getElementById('recordPopup');
 
         // Apply closing animation
-        popup.style.transition = "opacity 0.25s ease-in, transform 0.3s ease-in";
+        popup.style.transition = "opacity 0.15s ease-in, transform 0.15s ease-in";
         popup.style.opacity = "0";
-        popup.style.transform = " scale(0.95)";
+        popup.style.transform = "scale(0.9)";
+
+
 
         // Hide after animation completes
         setTimeout(() => {
@@ -305,10 +309,9 @@
     }
 
     // Close popup when clicking outside
-    document.getElementById('recordPopup').addEventListener('click', function (e) {
+    document.getElementById('recordPopup').addEventListener('click', function(e) {
         if (e.target === this) {
             closePopup();
         }
     });
 </script>
-
