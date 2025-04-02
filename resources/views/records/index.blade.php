@@ -101,29 +101,20 @@
 
             @endif
 
-
-
-
-
-
-
-
             <!-- Records Table -->
+
             <div class="w-full overflow-x-auto custom-scrollbar">
                 <table class="min-w-full border border-[#e7a739] text-sm rounded-md shadow-md">
                     <thead class="bg-[#f0eae3] text-gray-900">
                         <tr class="text-left">
                             <th class="p-2 min-w-[80px] max-w-[120px]">First Name</th>
                             <th class="p-2 min-w-[80px] max-w-[120px]">Last Name</th>
-                            <th class="p-2 min-w-[180px] max-w-[250px]">Address</th>
                             <th class="p-2 min-w-[80px] max-w-[120px]">City</th>
                             <th class="p-2 min-w-[50px] max-w-[80px]">State</th>
                             <th class="p-2 min-w-[70px] max-w-[90px]">ZIP</th>
                             <th class="p-2 min-w-[100px] max-w-[150px]">Phone</th>
                             <th class="p-2 min-w-[180px] max-w-[300px]">Email</th>
-                            <th class="p-2 min-w-[200px] max-w-[400px]">Reason</th>
                             <th class="p-2 min-w-[80px] max-w-[100px]">Charged</th>
-                            <th class="p-2 min-w-[200px] max-w-[400px]">Comment</th>
                             <th class="p-2 min-w-[150px] max-w-[200px]">Added By</th>
                             <th class="p-2 min-w-[120px] max-w-[150px]">Date</th>
                             <th class="p-2 min-w-[100px] max-w-[120px]">Actions</th>
@@ -131,42 +122,46 @@
                     </thead>
                     <tbody class="bg-white">
                         @foreach ($records as $record)
-                            <tr class="border-b border-[#e7a739] text-gray-900 hover:bg-[#fef2f5] transition">
-                                <td class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify ">
+                            <tr class="border-b border-[#e7a739] text-gray-900 hover:bg-[#fef2f5] transition cursor-pointer"
+                                onclick="showPopup('{{ $record->id }}', '{{ $record->first_name }}', '{{ $record->last_name }}', '{{ $record->address1 }}, {{ $record->address2 }}', '{{ $record->city }}', '{{ $record->state }}', '{{ $record->zip }}', '{{ $record->phone }}', '{{ $record->email }}', '{{ $record->reason }}', '{{ $record->charged ? 'Yes' : 'No' }}', '{{ $record->comment }}', '{{ $record->user->name ?? 'N/A' }}', '{{ $record->created_at->format('d-m-Y') }}')">
+                                <td
+                                    class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->first_name }}</td>
-                                <td class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify">
+                                <td
+                                    class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->last_name }}</td>
-                                <td class="p-2 min-w-[180px] max-w-[250px] whitespace-normal break-words align-top text-justify">
-                                    {{ $record->address1 }}, {{ $record->address2 }}</td>
-                                <td class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify">
+                                <td
+                                    class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->city }}</td>
-                                <td class="p-2 min-w-[50px] max-w-[80px] whitespace-normal break-words align-top text-justify">
+                                <td
+                                    class="p-2 min-w-[50px] max-w-[80px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->state }}</td>
-                                <td class="p-2 min-w-[70px] max-w-[90px] whitespace-normal break-words align-top text-justify">
+                                <td
+                                    class="p-2 min-w-[70px] max-w-[90px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->zip }}</td>
-                                <td class="p-2 min-w-[100px] max-w-[150px] whitespace-normal break-words align-top text-justify">
+                                <td
+                                    class="p-2 min-w-[100px] max-w-[150px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->phone }}</td>
-                                <td class="p-2 min-w-[180px] max-w-[220px] whitespace-normal break-words align-top text-justify">
+                                <td
+                                    class="p-2 min-w-[180px] max-w-[300px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->email }}</td>
-                                <td class="p-2 min-w-[200px] max-w-[400px] whitespace-normal break-words align-top text-justify">
-                                    {{ $record->reason }}</td>
                                 <td class="p-2 min-w-[80px] max-w-[100px] align-top text-center">
                                     <span
-                                        class="px-2 py-1 text-xs font-semibold rounded-full shadow-sm
-                            {{ $record->charged ? 'bg-green-100 text-green-700 border border-green-400' : 'bg-red-100 text-red-700 border border-red-400' }}">
+                                        class="px-2 py-1 text-xs font-semibold rounded-full shadow-sm {{ $record->charged ? 'bg-green-100 text-green-700 border border-green-400' : 'bg-red-100 text-red-700 border border-red-400' }}">
                                         {{ $record->charged ? 'Yes' : 'No' }}
                                     </span>
                                 </td>
-                                <td class="p-2 min-w-[200px] max-w-[400px] whitespace-normal break-words align-top text-justify">
-                                    {{ $record->comment }}</td>
-                                <td class="p-2 min-w-[150px] max-w-[200px] whitespace-normal break-words align-top text-justify">
+                                <td
+                                    class="p-2 min-w-[150px] max-w-[200px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->user->name ?? 'N/A' }}</td>
-                                <td class="p-2 min-w-[120px] max-w-[150px] whitespace-normal break-words align-top text-justify">
-                                    {{ $record->created_at->format('Y-m-d') }}</td>
+                                <td
+                                    class="p-2 min-w-[120px] max-w-[150px] whitespace-normal break-words align-top text-justify">
+                                    {{ $record->created_at->format('d-m-Y') }}</td>
                                 <td class="p-2 min-w-[100px] max-w-[120px] flex space-x-3">
+
                                     <!-- Edit Button -->
                                     <a href="{{ route('records.edit', $record->id) }}"
-                                        class="text-[#9f234a] hover:text-[#871d3e]">
+                                        class="text-[#9f234a] hover:text-[#871d3e]" onclick="event.stopPropagation()">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <!-- Delete Button -->
@@ -176,7 +171,8 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" onclick="return confirm('Are you sure?')"
-                                                    class="text-red-500 hover:text-red-600">
+                                                    class="text-red-500 hover:text-red-600"
+                                                    onclick="event.stopPropagation()">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </form>
@@ -189,13 +185,29 @@
                 </table>
             </div>
 
-
             <!-- Pagination -->
             <div class="mt-4">
                 {{ $records->links() }}
             </div>
         </div>
-    </div>
+
+        <!-- Popup Modal -->
+        <div id="recordPopup"
+            class="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center hidden z-50 transition-opacity duration-300">
+            <div
+                class="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-2xl border-t-4 border-[#e7a739] transform transition-all duration-300 scale-95 max-h-[100vh] overflow-hidden">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="popupFullName" class="text-3xl font-bold text-gray-900 tracking-tight"></h2>
+                    <button onclick="closePopup()"
+                        class="text-[#9f234a] hover:text-[#871d3e] text-3xl font-semibold transition-colors duration-200">×</button>
+                </div>
+                <div id="popupContent"
+                    class="space-y-6 text-gray-900 overflow-y-auto pr-3 max-h-[75vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-transparent rounded-b-2xl py-3">
+                    <!-- Dynamic content injected here -->
+                </div>
+            </div>
+        </div>
+
 </x-app-layout>
 
 <script>
@@ -213,4 +225,75 @@
     }
 
     setTimeout(dismissAlert, 4000);
+</script>
+
+<script>
+    function showPopup(id, firstName, lastName, address, city, state, zip, phone, email, reason, charged, comment,
+        addedBy, date) {
+        const popup = document.getElementById('recordPopup');
+        const popupFullName = document.getElementById('popupFullName');
+        const popupContent = document.getElementById('popupContent');
+
+        // Set full name as heading
+        popupFullName.textContent = `${firstName} ${lastName}`;
+
+        // Populate content
+        popupContent.innerHTML = `
+            <!-- Email and Phone -->
+            <div class="flex flex-col space-y-2">
+                <p class="text-lg text-gray-700 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-[#9f234a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    ${email}
+                </p>
+                <p class="text-lg text-gray-700 flex items-center">
+                    <svg class="w-5 h-5 mr-2 text-[#9f234a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    ${phone}
+                </p>
+            </div>
+
+            <!-- Address -->
+            <div class="bg-[#f0eae3] p-4 rounded-lg shadow-sm">
+                <h3 class="text-sm font-semibold text-[#9f234a] uppercase tracking-wide mb-2">Address</h3>
+                <p class="text-gray-800">${address}, ${city}, ${state} ${zip}</p>
+            </div>
+
+            <!-- Reason -->
+            <div class="bg-[#f0eae3] p-4 rounded-lg shadow-sm">
+                <h3 class="text-sm font-semibold text-[#9f234a] uppercase tracking-wide mb-2">Reason</h3>
+                <p class="text-gray-800">${reason}</p>
+            </div>
+
+            <!-- Comment -->
+            <div class="bg-[#f0eae3] p-4 rounded-lg shadow-sm">
+                <h3 class="text-sm font-semibold text-[#9f234a] uppercase tracking-wide mb-2">Comment</h3>
+                <p class="text-gray-800">${comment}</p>
+            </div>
+
+            <!-- Additional Info -->
+            <div class="flex justify-between text-sm text-gray-600">
+                <p>Added By: <span class="font-medium text-gray-900">${addedBy}</span></p>
+                <p>Date: <span class="font-medium text-gray-900">${date}</span></p>
+            </div>
+        `;
+
+        popup.classList.remove('hidden');
+        setTimeout(() => {
+            popup.querySelector('div[scale-95]').classList.remove('scale-95');
+            popup.querySelector('div[scale-95]').classList.add('scale-100');
+        }, 10); // Smooth animation
+    }
+
+    function closePopup() {
+        const popup = document.getElementById('recordPopup');
+        popup.querySelector('div[scale-100]')?.classList.add('scale-95');
+        popup.querySelector('div[scale-100]')?.classList.remove('scale-100');
+        setTimeout(() => popup.classList.add('hidden'), 300); // Match transition duration
+    }
+
+    // Close popup when clicking outside
+    document.getElementById('recordPopup').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closePopup();
+        }
+    });
 </script>

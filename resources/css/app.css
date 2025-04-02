@@ -74,3 +74,78 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: #ea4378;
   }
+
+
+
+  /* Popup */
+
+  #recordPopup {
+    transition: opacity 0.3s ease-in-out;
+}
+
+#recordPopup.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#recordPopup:not(.hidden) {
+    opacity: 1;
+}
+
+#recordPopup .scale-95 {
+    transform: scale(0.95);
+}
+
+#recordPopup .scale-100 {
+    transform: scale(1);
+}
+
+#popupContent {
+    font-family: 'Inter', sans-serif; /* Modern font, if available */
+}
+
+#popupContent p {
+    word-break: break-words;
+    line-height: 1.6;
+    transition: color 0.2s ease;
+}
+
+#popupContent .bg-[#f0eae3] {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#popupContent .bg-[#f0eae3]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+#popupContent h3 {
+    letter-spacing: 0.05em;
+}
+
+#popupContent svg {
+    flex-shrink: 0;
+}
+
+.max-h-[80vh] {
+    max-height: 80vh;
+}
+
+.overflow-y-auto {
+    overflow-y: auto;
+}
+
+/* Scrollbar */
+.overflow-y-auto::-webkit-scrollbar {
+    width: 5px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 100px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+    background: #9f234a;
+    border-radius: 10px;
+}
