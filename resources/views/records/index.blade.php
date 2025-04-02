@@ -123,7 +123,7 @@
                     <tbody class="bg-white">
                         @foreach ($records as $record)
                             <tr class="border-b border-[#e7a739] text-gray-900 hover:bg-[#fef2f5] transition cursor-pointer"
-                                onclick="showPopup('{{ $record->id }}', '{{ $record->first_name }}', '{{ $record->last_name }}', '{{ $record->address1 }}, {{ $record->address2 }}', '{{ $record->city }}', '{{ $record->state }}', '{{ $record->zip }}', '{{ $record->phone }}', '{{ $record->email }}', '{{ $record->reason }}', '{{ $record->charged ? 'Yes' : 'No' }}', '{{ $record->comment }}', '{{ $record->user->name ?? 'N/A' }}', '{{ $record->created_at->format('d-m-Y') }}')">
+                                onclick="showPopup('{{ e($record->id) }}', '{{ e($record->first_name) }}', '{{ e($record->last_name) }}', '{{ e($record->address1 . ', ' . $record->address2) }}', '{{ e($record->city) }}', '{{ e($record->state) }}', '{{ e($record->zip) }}', '{{ e($record->phone) }}', '{{ e($record->email) }}', '{{ e($record->reason) }}', '{{ $record->charged ? 'Yes' : 'No' }}', '{{ $record->comment }}', '{{ $record->user->name ?? 'N/A' }}', '{{ $record->created_at->format('d-m-Y') }}')">
                                 <td
                                     class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->first_name }}</td>
@@ -276,24 +276,39 @@
             </div>
         `;
 
+        // Make popup visible
         popup.classList.remove('hidden');
+
+        // Smooth futuristic animation
+        popup.style.opacity = "0";
+        popup.style.transform = "translateY(30px) scale(0.9)";
         setTimeout(() => {
-            popup.querySelector('div[scale-95]').classList.remove('scale-95');
-            popup.querySelector('div[scale-95]').classList.add('scale-100');
-        }, 10); // Smooth animation
+            popup.style.transition = "opacity 0.3s ease-out, transform 0.4s ease-out";
+            popup.style.opacity = "1";
+            popup.style.transform = "translateY(0) scale(1)";
+        }, 10);
     }
 
     function closePopup() {
         const popup = document.getElementById('recordPopup');
-        popup.querySelector('div[scale-100]')?.classList.add('scale-95');
-        popup.querySelector('div[scale-100]')?.classList.remove('scale-100');
-        setTimeout(() => popup.classList.add('hidden'), 300); // Match transition duration
+
+        // Apply closing animation
+        popup.style.transition = "opacity 0.25s ease-in, transform 0.3s ease-in";
+        popup.style.opacity = "0";
+        popup.style.transform = "translateY(20px) scale(0.95)";
+
+        // Hide after animation completes
+        setTimeout(() => {
+            popup.classList.add('hidden');
+            popup.style.transition = ""; // Reset transition
+        }, 250);
     }
 
     // Close popup when clicking outside
-    document.getElementById('recordPopup').addEventListener('click', function(e) {
+    document.getElementById('recordPopup').addEventListener('click', function (e) {
         if (e.target === this) {
             closePopup();
         }
     });
 </script>
+
