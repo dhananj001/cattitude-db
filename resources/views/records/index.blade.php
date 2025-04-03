@@ -237,46 +237,62 @@
         // Set full name as heading
         popupFullName.textContent = `${firstName} ${lastName}`;
 
-        // Populate content
-        popupContent.innerHTML = `
-            <!-- Email and Phone -->
-            <div class="flex flex-col space-y-2">
-                <p class="text-lg text-gray-700 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-[#9f234a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                    ${email}
-                </p>
-                <p class="text-lg text-gray-700 flex items-center">
-                    <svg class="w-5 h-5 mr-2 text-[#9f234a]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                    ${phone}
-                </p>
-            </div>
+        // Clear previous content
+        popupContent.innerHTML = "";
 
-            <!-- Address -->
-            <div class="bg-[#f0eae3] p-4 rounded-lg shadow-sm">
-                <h3 class="text-sm font-semibold text-[#9f234a] uppercase tracking-wide mb-2">Address</h3>
-                <p class="text-gray-800">${address}, ${city}, ${state} ${zip}</p>
-            </div>
+        // Function to decode HTML entities
+        function decodeHTML(text) {
+            const doc = new DOMParser().parseFromString(text, "text/html");
+            return doc.documentElement.textContent;
+        }
 
-            <!-- Reason -->
-            <div class="bg-[#f0eae3] p-4 rounded-lg shadow-sm">
-                <h3 class="text-sm font-semibold text-[#9f234a] uppercase tracking-wide mb-2">Reason</h3>
-                <p class="text-gray-800">${reason}</p>
-            </div>
+        // Function to create and append text-based elements
+        function createInfoBlock(label, value) {
+            const div = document.createElement("div");
+            div.classList.add("bg-[#f0eae3]", "p-4", "rounded-lg", "shadow-sm");
 
-            <!-- Comment -->
-            <div class="bg-[#f0eae3] p-4 rounded-lg shadow-sm">
-                <h3 class="text-sm font-semibold text-[#9f234a] uppercase tracking-wide mb-2">Comment</h3>
-                <p class="text-gray-800">${comment}</p>
-            </div>
+            const heading = document.createElement("h3");
+            heading.classList.add("text-sm", "font-semibold", "text-[#9f234a]", "uppercase", "tracking-wide", "mb-2");
+            heading.textContent = label;
 
-            <!-- Additional Info -->
-            <div class="flex justify-between text-sm text-gray-600">
-                <p>Added By: <span class="font-medium text-gray-900">${addedBy}</span></p>
-                <p>Date: <span class="font-medium text-gray-900">${date}</span></p>
-            </div>
-        `;
+            const paragraph = document.createElement("p");
+            paragraph.classList.add("text-gray-800");
+            paragraph.textContent = decodeHTML(value);
 
-        // Make popup visible
+            div.appendChild(heading);
+            div.appendChild(paragraph);
+            popupContent.appendChild(div);
+        }
+
+        // Function to create and append inline text-based elements
+        function createInlineInfo(label, value) {
+            const p = document.createElement("p");
+            p.innerHTML = `<strong>${label}:</strong> <span class="font-medium text-gray-900">${value}</span>`;
+            return p;
+        }
+
+        // Add Email and Phone
+        const contactDiv = document.createElement("div");
+        contactDiv.classList.add("flex", "flex-col", "space-y-2");
+
+        contactDiv.appendChild(createInlineInfo("Email", email));
+        contactDiv.appendChild(createInlineInfo("Phone", phone));
+        popupContent.appendChild(contactDiv);
+
+        // Add Address, Reason, and Comment
+        createInfoBlock("Address", `${address}, ${city}, ${state} ${zip}`);
+        createInfoBlock("Reason", reason);
+        createInfoBlock("Comment", comment);
+
+        // Add Added By and Date at the bottom
+        const extraInfoDiv = document.createElement("div");
+        extraInfoDiv.classList.add("flex", "justify-between", "text-sm", "text-gray-600");
+        extraInfoDiv.appendChild(createInlineInfo("Added By", addedBy));
+        extraInfoDiv.appendChild(createInlineInfo("Date", date));
+
+        popupContent.appendChild(extraInfoDiv);
+
+        // Show popup
         popup.classList.remove('hidden');
 
         // Smooth futuristic animation
@@ -287,8 +303,6 @@
             popup.style.opacity = "1";
             popup.style.transform = "scale(1)";
         }, 10);
-
-
     }
 
     function closePopup() {
@@ -298,8 +312,6 @@
         popup.style.transition = "opacity 0.15s ease-in, transform 0.15s ease-in";
         popup.style.opacity = "0";
         popup.style.transform = "scale(0.9)";
-
-
 
         // Hide after animation completes
         setTimeout(() => {
@@ -315,3 +327,4 @@
         }
     });
 </script>
+
