@@ -123,7 +123,7 @@
                     <tbody class="bg-white">
                         @foreach ($records as $record)
                             <tr class="border-b border-[#e7a739] text-gray-900 hover:bg-[#fef2f5] transition cursor-pointer"
-                                onclick="showPopup('{{ e($record->id) }}', '{{ e($record->first_name) }}', '{{ e($record->last_name) }}', '{{ e($record->address1 . ', ' . $record->address2) }}', '{{ e($record->city) }}', '{{ e($record->state) }}', '{{ e($record->zip) }}', '{{ e($record->phone) }}', '{{ e($record->email) }}', '{{ e($record->reason) }}', '{{ $record->charged ? 'Yes' : 'No' }}', '{{ $record->comment }}', '{{ $record->user->name ?? 'N/A' }}', '{{ $record->created_at->format('d-m-Y') }}')">
+                                onclick="showPopup('{{ e($record->id) }}', '{{ e($record->first_name) }}', '{{ e($record->last_name) }}', '{{ e($record->address1 . ', ' . $record->address2) }}', '{{ e($record->city) }}', '{{ e($record->state) }}', '{{ e($record->zip) }}', '{{ e($record->phone) }}', '{{ e($record->email) }}', `{{ e($record->reason) }}`, '{{ $record->charged ? 'Yes' : 'No' }}', `{{ e($record->comment) }}`, '{{ $record->user->name ?? 'N/A' }}', '{{ $record->created_at->format('d-m-Y') }}')">
                                 <td
                                     class="p-2 min-w-[80px] max-w-[120px] whitespace-normal break-words align-top text-justify">
                                     {{ $record->first_name }}</td>
@@ -257,7 +257,8 @@
 
             const paragraph = document.createElement("p");
             paragraph.classList.add("text-gray-800");
-            paragraph.textContent = decodeHTML(value);
+            // paragraph.textContent = decodeHTML(value);
+            paragraph.innerHTML = decodeHTML(value).replace(/\r\n|\r|\n/g, "<br>");
 
             div.appendChild(heading);
             div.appendChild(paragraph);
