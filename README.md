@@ -6,7 +6,7 @@ This repository contains the database application built for **Cattitude.inc** �
 
 ---
 
-## ✨ Features
+## Features
 
 * ✅ Clean and intuitive layout designed to match Cattitude’s theme and branding
 * 📄 **Records Page** with:
@@ -55,7 +55,7 @@ This repository contains the database application built for **Cattitude.inc** �
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 * ✅ **Backend**: Laravel 12
 * ✅ **Database**: MySQL
@@ -84,7 +84,7 @@ cattitude-db/
 
 ---
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 ```bash
 git clone https://github.com/dhananj001/cattitude-db
@@ -100,13 +100,13 @@ Make sure to configure your MySQL database credentials in `.env`.
 
 ---
 
-## 🙏 Acknowledgements
+## Acknowledgements
 
 This system was built specifically for **Cattitude.inc** to help streamline their operations and manage records efficiently.
 
 ---
 
-## 📬 Contact
+## Contact
 
 For queries or collaboration, feel free to reach out:
 
